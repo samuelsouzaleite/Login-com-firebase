@@ -1,0 +1,7 @@
+.bg-custom {
+    background-image: url('caminho-da-imagem.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh; /* Altura total da tela */
+}
