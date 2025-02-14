@@ -1,7 +1,24 @@
-.bg-custom {
-    background-image: url('caminho-da-imagem.jpg');
+*
+{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+body {
+
+    background-image: url('../img/santamonica.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    height: 100vh; /* Altura total da tela */
+    height:100vh; /* Altura total da tela */
+    
+}
+
+.area-login{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
 }
