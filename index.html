@@ -1,41 +1,97 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-br">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>Login - Firebase</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" 
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
   </head>
+  
   <body>
-    <header>
-      <h1 class="text-black text-center">LOGIN</h1>
-    </header>
     <main>
-        <!--  -->
-        <form class="area-login" action="" method="POST">
-          <h2 class="titulo-login">Login</h2>
+        <form class="area-login">
+          <h2 class="titulo-login">LOGIN</h2>
+
           <div class="conteudo-login">
-              <input class="input" type="text" name="usuario" required >
-              <label  class="label">Usuário</label>
+              <input class="input" type="email" name="usuario" required placeholder=" ">
+              <label class="label">Usuário</label>
           </div>
+          
           <div class="conteudo-login">
-              <input class="input"type="password" name="senha" id="Senha" required>
+              <input class="input" type="password" name="senha" id="Senha" required placeholder=" ">
               <label class="label">Senha</label>
           </div>
-          <div>
-              <input class="btn-login" type="submit" name="submit" value="Enviar">
+
+          <div id="loading" style="display: none; text-align: center; color: white;">
+              Autenticando...
+          </div>
+          
+          <div class="btn-area">
+              <button class="btn-login" type="submit">Entrar</button>
           </div> 
-          <p class="link-paragrafo">Não tem uma conta? <a class="link-paragrafo" id="link" href="cadastro.php">Cadastre-se</a></p>    
+
+          <p class="link-paragrafo">Não tem uma conta? <a class="link-paragrafo" id="link" href="cadastro.html">Cadastre-se</a></p>    
         </form>
     </main>
-    <footer>
 
-    </footer>
+    <!-- Bootstrap Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
+    <!-- Firebase Authentication -->
+    <script type="module">
+        // Importar Firebase SDK
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // Configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBqS_POmyEzQ6JFgns8ggeneNGhWe9or5Y",
+            authDomain: "projetologinfb-cbf91.firebaseapp.com",
+            projectId: "projetologinfb-cbf91",
+            storageBucket: "projetologinfb-cbf91.firebasestorage.app",
+            messagingSenderId: "456654942324",
+            appId: "1:456654942324:web:239d02f90d81712c95e121",
+            measurementId: "G-R8BZ0SBMPZ"
+        };
+
+        let auth;
+        try {
+            const app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+        } catch (error) {
+            console.error("Erro ao inicializar Firebase:", error);
+            alert("Erro ao conectar com o servidor.");
+        }
+
+        // Captura o formulário e botão de login
+        document.addEventListener("DOMContentLoaded", () => {
+            const form = document.querySelector(".area-login");
+            const loading = document.getElementById("loading");
+
+            form.addEventListener("submit", (e) => {
+                e.preventDefault();
+                loading.style.display = "block"; // Exibe o loader
+
+                const email = form.usuario.value;
+                const password = form.senha.value;
+
+                signInWithEmailAndPassword(auth, email, password)
+                    .then((userCredential) => {
+                        loading.style.display = "none"; // Esconde o loader
+                        alert("Login bem-sucedido! Usuário: " + userCredential.user.email);
+                        window.location.href = "dashboard.html"; // Redireciona
+                    })
+                    .catch((error) => {
+                        loading.style.display = "none"; // Esconde o loader
+                        alert("Erro no login: " + error.message);
+                    });
+            });
+        });
+    </script>
   </body>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 </html>
